@@ -1,5 +1,5 @@
 {
-  "name": "grammar-from-typescript-experiment",
+  "name": "vscode-grammar-from-ts-experiment",
   "version": "1.0.0",
   "main": "src/index.ts",
   "license": "MIT",
