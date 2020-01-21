@@ -8,24 +8,14 @@ import ngTemplate from '../src/grammars/ng-template';
 const processGrammar = (grammar: GrammarDefinition | GrammarDefinition[]): JsonObject => {
 	const processedGrammar: JsonObject = {};
 
-	for (const [key, value] of Object.entries(grammar))
-	{
-		if (typeof value === 'string')
-		{
+	for (const [key, value] of Object.entries(grammar)) {
+		if (typeof value === 'string') {
 			processedGrammar[key] = value;
-		}
-		else if (value instanceof RegExp)
-		{
-			const regexString = value.toString().replace(/^\/|\/$/g, '');
-
-			processedGrammar[key] = regexString;
-		}
-		else if (value instanceof Array)
-		{
+		} else if (value instanceof RegExp) {
+			processedGrammar[key] = value.toString().replace(/^\/|\/$/g, '');
+		} else if (value instanceof Array) {
 			processedGrammar[key] = value.map(processGrammar);
-		}
-		else
-		{
+		} else {
 			processedGrammar[key] = processGrammar(value);
 		}
 	}
@@ -38,7 +28,7 @@ const generate = (grammar: GrammarDefinition): void => {
 	const grammarContent = JSON.stringify(newGrammar, null, '  ');
 
 	fs.writeFile('dist/grammars/ng-template.tmLanguage.json', grammarContent, (error) => {
-		if (error) throw error
+		if (error) throw error;
 		console.log('File written!');
 	});
 }
