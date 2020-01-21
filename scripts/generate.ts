@@ -9,15 +9,14 @@ const processGrammar = (grammar: GrammarDefinition | GrammarDefinition[]): JsonO
 	const processedGrammar: JsonObject = {};
 
 	for (const [key, value] of Object.entries(grammar)) {
-		if (typeof value === 'string') {
-			processedGrammar[key] = value;
-		} else if (value instanceof RegExp) {
-			processedGrammar[key] = value.toString().replace(/^\/|\/$/g, '');
-		} else if (value instanceof Array) {
-			processedGrammar[key] = value.map(processGrammar);
-		} else {
-			processedGrammar[key] = processGrammar(value);
-		}
+		processedGrammar[key] =
+			(typeof value === 'string')
+				? value :
+			(value instanceof RegExp)
+				? value.toString().replace(/^\/|\/$/g, '') :
+			(value instanceof Array)
+				? value.map(processGrammar)
+				: processGrammar(value)
 	}
 
 	return processedGrammar;
