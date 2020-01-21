@@ -6,9 +6,7 @@ export const propertyBinding: GrammarDefinition = {
 		1: {
 			name: 'entity.other.attribute-name.html entity.other.ng-binding-name.property.html',
 			patterns: [
-				{
-					include: '#bindingKey'
-				}
+				{ include: '#bindingKey' }
 			]
 		},
 		2: {
