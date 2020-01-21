@@ -4,8 +4,12 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "lib": ["es2017"],
   },
-  "include": ["src"],
+  "include": [
+    "src/**/*.ts",
+    "scripts/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
