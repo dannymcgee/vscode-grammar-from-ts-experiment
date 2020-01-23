@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { GrammarDefinition } from '../src/types/grammar-definition.interface';
 import { JsonObject } from '../src/types/json-object.interface';
 
-// import ngTemplate from '../src/grammars/ng-template';
+import ngTemplate from '../src/grammars/ng-template';
 import ngScriptDquoted from '../src/grammars/ng-script/dquoted';
 import ngScriptSquoted from '../src/grammars/ng-script/squoted';
 
@@ -34,5 +34,6 @@ const generate = (grammar: GrammarDefinition, filenamePrefix: string): void => {
 	});
 }
 
+generate(ngTemplate, 'ng-template');
 generate(ngScriptDquoted, 'template-script-dquoted');
 generate(ngScriptSquoted, 'template-script-squoted');
