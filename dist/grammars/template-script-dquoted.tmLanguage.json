@@ -1,0 +1,520 @@
+{
+  "name": "Angular Template Script",
+  "scopeName": "template-script.dquoted.ng",
+  "patterns": [
+    {
+      "include": "#statements"
+    }
+  ],
+  "repository": {
+    "statements": {
+      "patterns": [
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#literal"
+        },
+        {
+          "include": "#afterOperatorBlock"
+        },
+        {
+          "include": "#declBlock"
+        },
+        {
+          "include": "#expression"
+        },
+        {
+          "include": "#punctuationSemicolon"
+        }
+      ]
+    },
+    "expression": {
+      "name": "meta.expression.js",
+      "patterns": [
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#literal"
+        },
+        {
+          "include": "#ternaryExpression"
+        },
+        {
+          "include": "#objectLiteral"
+        },
+        {
+          "include": "#functionCall"
+        },
+        {
+          "include": "#identifiers"
+        },
+        {
+          "include": "#parenExpression"
+        },
+        {
+          "include": "#punctuationComma"
+        },
+        {
+          "include": "#punctuationAccessor"
+        }
+      ]
+    },
+    "parenExpression": {
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.js"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.js"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        },
+        {
+          "include": "#punctuationComma"
+        }
+      ]
+    },
+    "ternaryExpression": {
+      "begin": "(?=\\?)",
+      "end": "(?=$|[\";,})\\]])",
+      "patterns": [
+        {
+          "include": "#ternaryOperator"
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "match": "(\\.)\\s*(?:([[:upper:]][_$[:digit:][:upper:]]*)|([_$[:alpha:]][_$[:alnum:]]*))(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)",
+          "captures": {
+            "1": {
+              "name": "punctuation.accessor.js"
+            },
+            "2": {
+              "name": "constant.other.object.property.js"
+            },
+            "3": {
+              "name": "variable.other.object.property.js"
+            }
+          }
+        },
+        {
+          "match": "(\\.)\\s*([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])",
+          "captures": {
+            "1": {
+              "name": "punctuation.accessor.js"
+            },
+            "2": {
+              "name": "constant.other.property.js"
+            }
+          }
+        },
+        {
+          "match": "(\\.)\\s*([_$[:alpha:]][_$[:alnum:]]*)",
+          "captures": {
+            "1": {
+              "name": "punctuation.accessor.js"
+            },
+            "2": {
+              "name": "variable.other.property.js"
+            }
+          }
+        },
+        {
+          "match": "(?:([[:upper:]][_$[:digit:][:upper:]]*)|([_$[:alpha:]][_$[:alnum:]]*))(?=\\s*\\.\\s*[_$[:alpha:]][_$[:alnum:]]*)",
+          "captures": {
+            "1": {
+              "name": "constant.other.object.js"
+            },
+            "2": {
+              "name": "variable.other.object.js"
+            }
+          }
+        },
+        {
+          "name": "constant.other.js",
+          "match": "([[:upper:]][_$[:digit:][:upper:]]*)(?![_$[:alnum:]])"
+        },
+        {
+          "name": "variable.other.readwrite.js",
+          "match": "[_$[:alpha:]][_$[:alnum:]]*"
+        }
+      ]
+    },
+    "functionCall": {
+      "begin": "(?=(\\.\\s*)?([_$[:alpha:]][_$[:alnum:]]*)\\s*\\()",
+      "end": "(?<=\\))(?!(\\.\\s*)?([_$[:alpha:]][_$[:alnum:]]*)\\s*\\()",
+      "patterns": [
+        {
+          "name": "punctuation.accessor.js",
+          "match": "\\."
+        },
+        {
+          "name": "entity.name.function.js",
+          "match": "([_$[:alpha:]][_$[:alnum:]]*)"
+        },
+        {
+          "include": "#parenExpression"
+        }
+      ]
+    },
+    "string": {
+      "name": "string.quoted.single.js",
+      "begin": "'",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.js"
+        }
+      },
+      "end": "(')|((?:[^\\\\\\n])$)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.js"
+        },
+        "2": {
+          "name": "invalid.illegal.newline.js"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#stringCharacterEscape"
+        }
+      ]
+    },
+    "stringCharacterEscape": {
+      "name": "constant.character.escape.js",
+      "match": "\\\\(x\\h{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+    },
+    "literal": {
+      "patterns": [
+        {
+          "include": "#numericLiteral"
+        },
+        {
+          "include": "#booleanLiteral"
+        },
+        {
+          "include": "#nullLiteral"
+        },
+        {
+          "include": "#undefinedLiteral"
+        },
+        {
+          "include": "#numericConstantLiteral"
+        },
+        {
+          "include": "#arrayLiteral"
+        },
+        {
+          "include": "#thisLiteral"
+        }
+      ]
+    },
+    "numericLiteral": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.js",
+          "match": "\\b(?<!\\$)0(x|X)[0-9a-fA-F]+\\b(?!\\$)"
+        },
+        {
+          "name": "constant.numeric.binary.js",
+          "match": "\\b(?<!\\$)0(b|B)[01]+\\b(?!\\$)"
+        },
+        {
+          "name": "constant.numeric.octal.js",
+          "match": "\\b(?<!\\$)0(o|O)?[0-7]+\\b(?!\\$)"
+        },
+        {
+          "match": "(?x)\n(?<!\\$)(?:\n  (?:\\b[0-9]+(\\.)[0-9]+[eE][+-]?[0-9]+\\b)| # 1.1E+3\n  (?:\\b[0-9]+(\\.)[eE][+-]?[0-9]+\\b)|       # 1.E+3\n  (?:\\B(\\.)[0-9]+[eE][+-]?[0-9]+\\b)|       # .1E+3\n  (?:\\b[0-9]+[eE][+-]?[0-9]+\\b)|            # 1E+3\n  (?:\\b[0-9]+(\\.)[0-9]+\\b)|                # 1.1\n  (?:\\b[0-9]+(\\.)\\B)|                      # 1.\n  (?:\\B(\\.)[0-9]+\\b)|                      # .1\n  (?:\\b[0-9]+\\b(?!\\.))                     # 1\n)(?!\\$)",
+          "captures": {
+            "0": {
+              "name": "constant.numeric.decimal.js"
+            },
+            "1": {
+              "name": "meta.delimiter.decimal.period.js"
+            },
+            "2": {
+              "name": "meta.delimiter.decimal.period.js"
+            },
+            "3": {
+              "name": "meta.delimiter.decimal.period.js"
+            },
+            "4": {
+              "name": "meta.delimiter.decimal.period.js"
+            },
+            "5": {
+              "name": "meta.delimiter.decimal.period.js"
+            },
+            "6": {
+              "name": "meta.delimiter.decimal.period.js"
+            }
+          }
+        }
+      ]
+    },
+    "booleanLiteral": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.true.js",
+          "match": "(?<!\\.|\\$)\\btrue\\b(?!\\$)"
+        },
+        {
+          "name": "constant.language.boolean.false.js",
+          "match": "(?<!\\.|\\$)\\bfalse\\b(?!\\$)"
+        }
+      ]
+    },
+    "nullLiteral": {
+      "name": "constant.language.null.js",
+      "match": "(?<!\\.|\\$)\\bnull\\b(?!\\$)"
+    },
+    "undefinedLiteral": {
+      "name": "constant.language.undefined.js",
+      "match": "(?<!\\.|\\$)\\bundefined\\b(?!\\$)"
+    },
+    "numericConstantLiteral": {
+      "patterns": [
+        {
+          "name": "constant.language.nan.js",
+          "match": "(?<!\\.|\\$)\\bNaN\\b(?!\\$)"
+        },
+        {
+          "name": "constant.language.infinity.js",
+          "match": "(?<!\\.|\\$)\\bInfinity\\b(?!\\$)"
+        }
+      ]
+    },
+    "arrayLiteral": {
+      "name": "meta.array.literal.js",
+      "begin": "\\[",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.square.js"
+        }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.square.js"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        },
+        {
+          "include": "#punctuationComma"
+        }
+      ]
+    },
+    "objectLiteral": {
+      "name": "meta.objectliteral.js",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.block.js"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.block.js"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#objectMember"
+        }
+      ]
+    },
+    "thisLiteral": {
+      "name": "variable.language.this.js",
+      "match": "(?<!\\.|\\$)\\bthis\\b(?!\\$)"
+    },
+    "punctuationComma": {
+      "name": "punctuation.separator.comma.js",
+      "match": ","
+    },
+    "punctuationSemicolon": {
+      "name": "punctuation.terminator.statement.js",
+      "match": ";"
+    },
+    "punctuationAccessor": {
+      "name": "punctuation.accessor.js",
+      "match": "\\."
+    },
+    "ternaryOperator": {
+      "begin": "(\\?)",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.operator.ternary.js"
+        }
+      },
+      "end": "(:)",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.operator.ternary.js"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "afterOperatorBlock": {
+      "name": "meta.objectliteral.js",
+      "begin": "(?<=[=(,\\[?+!]|await|return|yield|throw|in|of|typeof|&&|\\|\\||\\*)\\s*(\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.block.js"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.block.js"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#objectMember"
+        }
+      ]
+    },
+    "declBlock": {
+      "name": "meta.block.js",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.block.js"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.block.js"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#statements"
+        }
+      ]
+    },
+    "objectMember": {
+      "patterns": [
+        {
+          "include": "#objectMemberKeyQuoted"
+        },
+        {
+          "name": "meta.object.member.js",
+          "begin": "(?x)(?:([_$[:alpha:]][_$[:alnum:]]*)\\s*(:)(?=\\s*( (async\\s+)|(function\\s*[(<])|(function\\s+)| ([_$[:alpha:]][_$[:alnum:]]*\\s*=>)| ((<([^<>]|\\<[^<>]+\\>)+>\\s*)?\\(([^()]|\\([^()]*\\))*\\)(\\s*:\\s*(.)*)?\\s*=>))))",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.object-literal.key.js"
+            },
+            "1": {
+              "name": "entity.name.function.js"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.js"
+            }
+          },
+          "end": "(?=,|\\})",
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
+        },
+        {
+          "name": "meta.object.member.js",
+          "begin": "(?:[_$[:alpha:]][_$[:alnum:]]*)\\s*(:)",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.object-literal.key.js"
+            },
+            "1": {
+              "name": "punctuation.separator.key-value.js"
+            }
+          },
+          "end": "(?=,|\\})",
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
+        },
+        {
+          "name": "meta.object.member.js",
+          "begin": "\\.\\.\\.",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.spread.js"
+            }
+          },
+          "end": "(?=,|\\})",
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
+        },
+        {
+          "name": "meta.object.member.js",
+          "match": "([_$[:alpha:]][_$[:alnum:]]*)\\s*(?=,|\\}|$)",
+          "captures": {
+            "1": {
+              "name": "variable.other.readwrite.js"
+            }
+          }
+        },
+        {
+          "include": "#punctuationComma"
+        }
+      ]
+    },
+    "objectMemberKeyQuoted": {
+      "name": "meta.object.member.js",
+      "begin": "(?=(?:(?:'[^']*')|(?:\\[([^\\[\\]]|\\[[^\\[\\]]+\\])+\\]))\\s*:)",
+      "end": "(?=,|\\})",
+      "patterns": [
+        {
+          "name": "meta.object-literal.key.js",
+          "begin": "(?=(?:(?:'[^']*')|(?:\\[([^\\[\\]]|\\[[^\\[\\]]+\\])+\\]))\\s*:)",
+          "end": ":",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.separator.key-value.js"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#string"
+            },
+            {
+              "include": "#arrayLiteral"
+            }
+          ]
+        },
+        {
+          "include": "#expression"
+        }
+      ]
+    }
+  }
+}

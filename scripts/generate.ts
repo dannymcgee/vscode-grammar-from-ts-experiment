@@ -3,7 +3,9 @@ import * as fs from 'fs';
 import { GrammarDefinition } from '../src/types/grammar-definition.interface';
 import { JsonObject } from '../src/types/json-object.interface';
 
-import ngTemplate from '../src/grammars/ng-template';
+// import ngTemplate from '../src/grammars/ng-template';
+import ngScriptDquoted from '../src/grammars/ng-script/dquoted';
+import ngScriptSquoted from '../src/grammars/ng-script/squoted';
 
 const processGrammar = (grammar: GrammarDefinition | GrammarDefinition[]): JsonObject => {
 	const processedGrammar: JsonObject = {};
@@ -22,14 +24,15 @@ const processGrammar = (grammar: GrammarDefinition | GrammarDefinition[]): JsonO
 	return processedGrammar;
 }
 
-const generate = (grammar: GrammarDefinition): void => {
+const generate = (grammar: GrammarDefinition, filenamePrefix: string): void => {
 	const newGrammar: JsonObject = processGrammar(grammar);
 	const grammarContent = JSON.stringify(newGrammar, null, '  ');
 
-	fs.writeFile('dist/grammars/ng-template.tmLanguage.json', grammarContent, (error) => {
+	fs.writeFile(`dist/grammars/${filenamePrefix}.tmLanguage.json`, grammarContent, (error) => {
 		if (error) throw error;
 		console.log('File written!');
 	});
 }
 
-generate(ngTemplate);
+generate(ngScriptDquoted, 'template-script-dquoted');
+generate(ngScriptSquoted, 'template-script-squoted');
